@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "name": "@logismix/mydata-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Greek myDATA (AADE) API client library",
   "repository": {
     "type": "git",
