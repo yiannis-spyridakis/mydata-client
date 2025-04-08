@@ -407,8 +407,7 @@ export class MyDataClient {
    * @returns The full ResponseDoc from myDATA
    */
   async sendProviderInvoices(
-    invoices: AadeBookInvoiceType[],
-    validate = false
+    invoices: AadeBookInvoiceType[]
   ): Promise<ResponseDoc> {
     // TODO: Implement in XmlService, ensuring correct root element and namespaces
     const xml = this._xmlService.buildInvoicesDocXml(invoices); // Reuses ERP version

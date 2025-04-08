@@ -4,7 +4,9 @@
  * The main response document returned from myDATA API calls
  */
 export interface ResponseDoc {
-  response: ResponseType[];
+  ResponseDoc: {
+    response: ResponseType | ResponseType[];
+  };
 }
 
 /**

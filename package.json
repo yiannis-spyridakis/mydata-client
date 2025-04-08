@@ -20,13 +20,15 @@
     "dist/",
     "esm/",
     "types/",
-    "schemas/"
+    "schemas/",
+    "tsconfig.json"
   ],
   "scripts": {
     "clean": "rimraf dist esm types",
-    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run copy-types",
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
+    "copy-types": "mkdirp types && find dist -name '*.d.ts' -exec cp --parents {} types \\;",
     "test": "jest --config jest.config.cjs",
     "prepublishOnly": "npm run build && npm test"
   },
@@ -56,6 +58,7 @@
     "concurrently": "^8.0.0",
     "dotenv": "^16.4.5",
     "jest": "^29.0.0",
+    "mkdirp": "^3.0.1",
     "rimraf": "^5.0.0",
     "ts-jest": "^29.0.0",
     "typescript": "^5.0.0"

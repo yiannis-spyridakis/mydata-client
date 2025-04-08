@@ -133,7 +133,7 @@ async function createInvoiceExample() {
 
   // Send the invoice to myDATA
   try {
-    const response = await myDataClient.sendProviderInvoices([invoice], true);
+    const response = await myDataClient.sendProviderInvoices([invoice]);
     console.log('Response from myDATA:', JSON.stringify(response, null, 2));
   } catch (error) {
     console.error('Error sending invoice to myDATA:', error);
