@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<InvoicesDoc xmlns="http://www.aade.gr/myDATA/invoice/v1.0"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:schemaLocation="http://www.aade.gr/myDATA/invoice/v1.0/InvoicesDoc-v0.6.xsd"	
+			xmlns:icls="https://www.aade.gr/myDATA/incomeClassificaton/v1.0" 
+			xmlns:ecls="https://www.aade.gr/myDATA/expensesClassificaton/v1.0">
+	<invoice>
+		<issuer>			
+			<vatNumber>999999999</vatNumber>
+			<country>GR</country>
+			<branch>1</branch>			
+		</issuer>		
+		<invoiceHeader>
+			<series>A</series>
+			<aa>101</aa>
+			<issueDate>2020-04-08</issueDate>
+			<invoiceType>17.2</invoiceType>
+			<currency>EUR</currency>			
+		</invoiceHeader>		
+		<invoiceDetails>
+			<lineNumber>1</lineNumber>
+			<netValue>1000.00</netValue>
+			<vatCategory>8</vatCategory>
+			<vatAmount>0.00</vatAmount>					
+			<expensesClassification>
+				<ecls:classificationType>E3_587</ecls:classificationType>
+				<ecls:classificationCategory>category2_8</ecls:classificationCategory>
+				<ecls:amount>1000.00</ecls:amount>
+			</expensesClassification>			
+		</invoiceDetails>
+		<invoiceSummary>
+			<totalNetValue>1000.00</totalNetValue>
+			<totalVatAmount>0.00</totalVatAmount>
+			<totalWithheldAmount>0.00</totalWithheldAmount>
+			<totalFeesAmount>0.00</totalFeesAmount>
+			<totalStampDutyAmount>0.00</totalStampDutyAmount>
+			<totalOtherTaxesAmount>0.00</totalOtherTaxesAmount>
+			<totalDeductionsAmount>0.00</totalDeductionsAmount>
+			<totalGrossValue>1000.00</totalGrossValue>
+			<expensesClassification>
+				<ecls:classificationType>E3_587</ecls:classificationType>
+				<ecls:classificationCategory>category2_8</ecls:classificationCategory>
+				<ecls:amount>1000.00</ecls:amount>				
+			</expensesClassification>			
+		</invoiceSummary>
+    </invoice>
+</InvoicesDoc>

@@ -1,0 +1,63 @@
+{
+  "name": "@logismix/mydata-client",
+  "version": "0.1.0",
+  "description": "Greek myDATA (AADE) API client library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yiannis-spyridakis/mydata-client.git"
+  },
+  "main": "dist/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "esm/",
+    "types/",
+    "schemas/"
+  ],
+  "scripts": {
+    "clean": "rimraf dist esm types",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p tsconfig.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "test": "jest --config jest.config.cjs",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "mydata",
+    "aade",
+    "greece",
+    "api",
+    "client",
+    "invoice",
+    "einvoicing"
+  ],
+  "author": "Yiannis Spyridakis <ys@logismix.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "libxmljs": "^1.0.11",
+    "xml2js": "^0.6.2",
+    "xmllint-wasm": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/libxmljs": "^0.18.13",
+    "@types/node": "^22.13.16",
+    "@types/node-fetch": "^2.6.12",
+    "@types/xml2js": "^0.4.14",
+    "concurrently": "^8.0.0",
+    "dotenv": "^16.4.5",
+    "jest": "^29.0.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  }
+}
