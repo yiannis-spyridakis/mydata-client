@@ -1,7 +1,6 @@
 {
-  "type": "module",
   "name": "@logismix/mydata-client",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Greek myDATA (AADE) API client library",
   "repository": {
     "type": "git",
@@ -15,6 +14,10 @@
       "import": "./esm/index.js",
       "require": "./dist/index.js",
       "types": "./types/index.d.ts"
+    },
+    "./esm/*": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
     }
   },
   "files": [
@@ -26,10 +29,9 @@
   ],
   "scripts": {
     "clean": "rimraf dist esm types",
-    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run copy-types",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "copy-types": "mkdirp types && find dist -name '*.d.ts' -exec cp --parents {} types \\;",
     "test": "jest --config jest.config.cjs",
     "prepublishOnly": "npm run build && npm test"
   },
