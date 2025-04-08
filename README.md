@@ -13,6 +13,7 @@ A TypeScript/JavaScript client library for the Greek myDATA (AADE) API, supporti
 - [Testing](#testing)
 - [API Documentation](#api-documentation)
 - [Examples](#examples)
+- [Official Documentation](#official-documentation)
 - [License](#license)
 
 ## Installation
@@ -127,6 +128,28 @@ MYDATA_RECEIVER_VAT=customer_vat_number
 ```
 
 3. The test suite validates XML against the official XSD schemas (v1.0.10) located in `/schemas`
+
+## Official Documentation
+
+The repository includes official myDATA API documentation in both English and Greek, as well as the original XSD schemas for validation:
+
+### ERP Documentation
+
+- [English Markdown](docs/mydata-erp-doc-v1.0.10-en.md)
+- [Greek Markdown](docs/mydata-erp-doc-v1.0.10-gr.md)
+- [Original Greek PDF](docs/myDATA%20API%20Documentation%20v1%20.0.10_official_erp.pdf)
+
+### Providers Documentation
+
+- [English Markdown](docs/mydata-providers-doc-v1.0.10-en.md)
+- [Greek Markdown](docs/mydata-providers-doc-v1.0.10-gr.md)
+- [Original Greek PDF](docs/myDATA%20API%20Documentation_Providers_v1%200%2010_official.pdf)
+
+### XSD Schemas
+
+All official XSD schemas (v1.0.10) for document validation are available in the `/schemas` directory.
+
+Note: These documentation files and schemas are only available in the GitHub repository and are not included when installing the package via npm.
 
 ## API Documentation
 
