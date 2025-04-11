@@ -1,57 +1,9 @@
 import { parseStringPromise, Builder } from 'xml2js';
-import { AadeBookInvoiceType } from '../models/invoice.model';
-import { IncomeClassificationsDoc } from '../models/incomeClassification.model';
-import { ExpensesClassificationsDoc } from '../models/expensesClassification.model';
-import { PaymentMethodsDoc } from '../models/paymentMethods.model';
-
-// Date/Time Formatting Helpers
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function formatTime(date: Date): string {
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const seconds = date.getSeconds().toString().padStart(2, '0');
-  return `${hours}:${minutes}:${seconds}`;
-}
-
-export function formatDatesInObject(obj: any): any {
-  if (obj === null || typeof obj !== 'object') return obj;
-  if (obj instanceof Date) return obj;
-  if (Array.isArray(obj)) return obj.map(formatDatesInObject);
-
-  const newObj: { [key: string]: any } = {};
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const value = obj[key];
-      if (value instanceof Date) {
-        if (
-          key === 'issueDate' ||
-          key === 'dispatchDate' ||
-          key === 'applicationDate' ||
-          key === 'cancellationDate' ||
-          key === 'IssueDate'
-        ) {
-          newObj[key] = formatDate(value);
-        } else if (key === 'dispatchTime') {
-          newObj[key] = formatTime(value);
-        } else {
-          newObj[key] = formatDate(value);
-          console.warn(
-            `Unhandled Date object for key: ${key}. Formatting as YYYY-MM-DD.`
-          );
-        }
-      } else {
-        newObj[key] = formatDatesInObject(value);
-      }
-    }
-  }
-  return newObj;
-}
+import { AadeBookInvoiceType } from '../../models/invoice.model';
+import { IncomeClassificationsDoc } from '../../models/incomeClassification.model';
+import { ExpensesClassificationsDoc } from '../../models/expensesClassification.model';
+import { PaymentMethodsDoc } from '../../models/paymentMethods.model';
+import { formatDatesInObject } from './utils';
 
 export class XmlHelper {
   private builderOptions = {
