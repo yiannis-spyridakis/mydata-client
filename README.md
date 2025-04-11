@@ -169,25 +169,25 @@ new MyDataClient(config: {
 
 #### ERP User Methods
 
-- `sendErpInvoices(invoices: AadeBookInvoiceType[]): Promise<ResponseDoc>`
-- `sendErpIncomeClassification(classifications: IncomeClassificationsDoc): Promise<ResponseDoc>`
-- `sendErpExpensesClassification(classifications: ExpensesClassificationsDoc): Promise<ResponseDoc>`
-- `sendErpPaymentsMethod(payments: PaymentMethodsDoc): Promise<ResponseDoc>`
-- `cancelErpInvoice(markToCancel: number, entityVatNumber?: string): Promise<ResponseDoc>`
-- `requestErpDocs(params: RequestDocParams): Promise<RequestedDoc>`
-- `requestErpTransmittedDocs(params: RequestDocParams): Promise<RequestedDoc>`
-- `requestErpMyIncome(params: RequestMyDataParams): Promise<RequestedBookInfo>`
-- `requestErpMyExpenses(params: RequestMyDataParams): Promise<RequestedBookInfo>`
-- `requestErpVatInfo(params: RequestVatE3Params): Promise<RequestedVatInfo>`
-- `requestErpE3Info(params: RequestVatE3Params): Promise<RequestedE3Info>`
+- `sendErpInvoices(invoices: AadeBookInvoiceType[]): Promise<ResponseDoc>` - Sends one or more invoices, including corrected/amending ones.
+- `sendErpIncomeClassification(classifications: IncomeClassificationsDoc): Promise<ResponseDoc>` - Sends one or more income classifications, corresponding to already submitted invoices.
+- `sendErpExpensesClassification(classifications: ExpensesClassificationsDoc): Promise<ResponseDoc>` - Sends one or more expense classifications.
+- `sendErpPaymentsMethod(payments: PaymentMethodsDoc): Promise<ResponseDoc>` - Sends payment methods for an invoice.
+- `cancelErpInvoice(markToCancel: number, entityVatNumber?: string): Promise<ResponseDoc>` - Cancels a previously transmitted invoice.
+- `requestErpDocs(params: RequestDocParams): Promise<RequestedDoc>` - Requests documents (invoices, classifications, cancellations) received from others.
+- `requestErpTransmittedDocs(params: RequestDocParams): Promise<RequestedDoc>` - Requests documents (invoices, classifications, cancellations) previously transmitted by the user.
+- `requestErpMyIncome(params: RequestMyDataParams): Promise<RequestedBookInfo>` - Requests aggregated income data for a period.
+- `requestErpMyExpenses(params: RequestMyDataParams): Promise<RequestedBookInfo>` - Requests aggregated expense data for a period.
+- `requestErpVatInfo(params: RequestVatE3Params): Promise<RequestedVatInfo>` - Requests VAT related data for a period.
+- `requestErpE3Info(params: RequestVatE3Params): Promise<RequestedE3Info>` - Requests E3 related data for a period.
 
 #### Provider User Methods
 
-- `sendProviderInvoices(invoices: AadeBookInvoiceType[], validate?: boolean): Promise<ResponseDoc>`
-- `sendProviderUnsignedInvoices(invoices: AadeBookInvoiceType[]): Promise<ResponseDoc>`
-- `sendProviderPaymentsMethod(payments: PaymentMethodsDoc): Promise<ResponseDoc>`
-- `requestProviderTransmittedDocs(issuerVat: string, mark: number, nextPartitionKey?: string, nextRowKey?: string): Promise<RequestedProviderDoc>`
-- `requestProviderReceiverInfo(vatNumber: string): Promise<ReceiverInfoDoc>`
+- `sendProviderInvoices(invoices: AadeBookInvoiceType[], validate?: boolean): Promise<ResponseDoc>` - Sends one or more invoices.
+- `sendProviderUnsignedInvoices(invoices: AadeBookInvoiceType[]): Promise<ResponseDoc>` - Sends one or more invoices pending issuance (unsigned).
+- `sendProviderPaymentsMethod(payments: PaymentMethodsDoc): Promise<ResponseDoc>` - Sends payment methods for an invoice.
+- `requestProviderTransmittedDocs(issuerVat: string, mark: number, nextPartitionKey?: string, nextRowKey?: string): Promise<RequestedProviderDoc>` - Requests summaries of documents previously transmitted by the provider for a specific issuer.
+- `requestProviderReceiverInfo(vatNumber: string): Promise<ReceiverInfoDoc>` - Requests information about a recipient's registered providers and emails.
 
 ## Examples
 
