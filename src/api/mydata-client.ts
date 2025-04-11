@@ -6,7 +6,7 @@ import {
   MYDATA_DEV_ERP_BASE_URL,
   MYDATA_DEV_PROVIDER_BASE_URL
 } from '../constants';
-import { XmlHelper } from './xml-helper';
+import { XmlHelper } from './internal/xml-helper';
 
 // --- Import ALL necessary models ---
 import { AadeBookInvoiceType } from '../models/invoice.model';
@@ -20,38 +20,13 @@ import { ReceiverInfoDoc } from '../models/receiverInfoDoc.model';
 import { RequestedBookInfo } from '../models/requestedBookInfo.model';
 import { RequestedVatInfo } from '../models/requestVatInfoResponse.model';
 import { RequestedE3Info } from '../models/requestE3InfoResponse.model';
-
-// --- Parameter Interfaces (from previous step) ---
-export interface RequestDocParams {
-  mark: number;
-  entityVatNumber?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  counterVatNumber?: string;
-  invType?: string;
-  maxMark?: number;
-  nextPartitionKey?: string;
-  nextRowKey?: string;
-}
-
-export interface RequestMyDataParams {
-  dateFrom: string;
-  dateTo: string;
-  entityVatNumber?: string;
-  counterVatNumber?: string;
-  invType?: string;
-  nextPartitionKey?: string;
-  nextRowKey?: string;
-}
-
-export interface RequestVatE3Params {
-  dateFrom: string;
-  dateTo: string;
-  entityVatNumber?: string;
-  GroupedPerDay?: 'true' | 'false';
-  nextPartitionKey?: string;
-  nextRowKey?: string;
-}
+import { requestParamsToUrlParams } from './internal/utils';
+import {
+  RequestDocParams,
+  RequestMyDataParams,
+  RequestVatE3Params
+} from '../models/request-params.model';
+import { request } from 'http';
 
 export interface MyDataClientConfig {
   userId: string;
@@ -202,22 +177,21 @@ export class MyDataClient {
 
   /**
    * [ERP] Cancels a previously transmitted invoice.
-   * @param markToCancel The MARK of the invoice to cancel
+   * @param mark The MARK of the invoice to cancel
    * @param entityVatNumber Optional: VAT of the entity if called by a representative
    * @returns The full ResponseDoc from myDATA (containing cancellationMark on success)
    */
   async cancelErpInvoice(
-    markToCancel: number,
+    mark: number,
     entityVatNumber?: string
   ): Promise<ResponseDoc> {
-    const params = new URLSearchParams();
-    params.set('mark', markToCancel.toString());
-    if (entityVatNumber) {
-      params.set('entityVatNumber', entityVatNumber);
-    }
+    const params = requestParamsToUrlParams({
+      mark,
+      entityVatNumber
+    });
 
     const url = `${this.erpBaseUrl}/CancelInvoice?${params.toString()}`;
-    console.log(`[ERP] Cancelling Invoice MARK: ${markToCancel}...`);
+    console.log(`[ERP] Cancelling Invoice MARK: ${mark}...`);
 
     const response = await fetch(url, {
       method: 'POST', // API Doc specifies POST, even with query params
@@ -234,12 +208,7 @@ export class MyDataClient {
    * @returns Parsed RequestedDoc object
    */
   async requestErpDocs(params: RequestDocParams): Promise<RequestedDoc> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${this.erpBaseUrl}/RequestDocs?${queryParams.toString()}`;
     console.log('[ERP] Requesting Received Docs...');
@@ -261,17 +230,12 @@ export class MyDataClient {
   async requestErpTransmittedDocs(
     params: RequestDocParams
   ): Promise<RequestedDoc> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${
       this.erpBaseUrl
     }/RequestTransmittedDocs?${queryParams.toString()}`;
-    console.log('[ERP] Requesting Transmitted Docs...');
+    console.log('[ERP] Requesting Transmitted Docs...', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -293,12 +257,7 @@ export class MyDataClient {
   async requestErpMyIncome(
     params: RequestMyDataParams
   ): Promise<RequestedBookInfo> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${this.erpBaseUrl}/RequestMyIncome?${queryParams.toString()}`;
     console.log('[ERP] Requesting MyIncome...');
@@ -323,12 +282,7 @@ export class MyDataClient {
   async requestErpMyExpenses(
     params: RequestMyDataParams
   ): Promise<RequestedBookInfo> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${
       this.erpBaseUrl
@@ -355,12 +309,7 @@ export class MyDataClient {
   async requestErpVatInfo(
     params: RequestVatE3Params
   ): Promise<RequestedVatInfo> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${this.erpBaseUrl}/RequestVatInfo?${queryParams.toString()}`;
     console.log('[ERP] Requesting VatInfo...');
@@ -380,12 +329,7 @@ export class MyDataClient {
    * @returns Parsed RequestedE3Info object
    */
   async requestErpE3Info(params: RequestVatE3Params): Promise<RequestedE3Info> {
-    const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        queryParams.set(key, String(value));
-      }
-    });
+    const queryParams = requestParamsToUrlParams(params);
 
     const url = `${this.erpBaseUrl}/RequestE3Info?${queryParams.toString()}`;
     console.log('[ERP] Requesting E3Info...');
@@ -409,7 +353,6 @@ export class MyDataClient {
   async sendProviderInvoices(
     invoices: AadeBookInvoiceType[]
   ): Promise<ResponseDoc> {
-    // TODO: Implement in XmlService, ensuring correct root element and namespaces
     const xml = this._xmlService.buildInvoicesDocXml(invoices); // Reuses ERP version
     // console.log('[Provider] Sending Invoices...', xml);
 
@@ -430,8 +373,7 @@ export class MyDataClient {
   async sendProviderUnsignedInvoices(
     invoices: AadeBookInvoiceType[]
   ): Promise<ResponseDoc> {
-    // TODO: Implement in XmlService, ensuring correct root element and namespaces
-    const xml = this._xmlService.buildInvoicesDocXml(invoices); // Reuses ERP version
+    const xml = this._xmlService.buildInvoicesDocXml(invoices);
 
     console.log('[Provider] Sending Unsigned Invoices...');
     const response = await fetch(
@@ -457,8 +399,7 @@ export class MyDataClient {
   async sendProviderPaymentsMethod(
     paymentsDoc: PaymentMethodsDoc
   ): Promise<ResponseDoc> {
-    // TODO: Implement in XmlService (Ensure root is <pmt:PaymentMethodsDoc>)
-    const xml = this._xmlService.buildPaymentMethodsXml(paymentsDoc); // Reuses ERP version
+    const xml = this._xmlService.buildPaymentMethodsXml(paymentsDoc);
 
     console.log('[Provider] Sending Payment Methods...');
     const response = await fetch(`${this.providerBaseUrl}/SendPaymentsMethod`, {
@@ -486,11 +427,12 @@ export class MyDataClient {
     nextPartitionKey?: string,
     nextRowKey?: string
   ): Promise<RequestedProviderDoc> {
-    const params = new URLSearchParams();
-    params.set('issuervat', issuerVat);
-    params.set('mark', mark.toString());
-    if (nextPartitionKey) params.set('nextPartitionKey', nextPartitionKey);
-    if (nextRowKey) params.set('nextRowKey', nextRowKey);
+    const params = requestParamsToUrlParams({
+      issuerVat,
+      mark,
+      nextPartitionKey,
+      nextRowKey
+    });
 
     const url = `${
       this.providerBaseUrl
@@ -519,8 +461,9 @@ export class MyDataClient {
   async requestProviderReceiverInfo(
     vatNumber: string
   ): Promise<ReceiverInfoDoc> {
-    const params = new URLSearchParams();
-    params.set('vatNumber', vatNumber);
+    const params = requestParamsToUrlParams({
+      vatNumber
+    });
 
     const url = `${
       this.providerBaseUrl
