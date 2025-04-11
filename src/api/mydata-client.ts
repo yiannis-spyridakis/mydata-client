@@ -95,7 +95,11 @@ export class MyDataClient {
     return jsResponse;
   }
 
-  // --- All the existing methods remain exactly the same ---
+  /**
+   * [ERP] Sends one or more invoices, including corrected/amending ones.
+   * @param invoices Array of invoice objects
+   * @returns The full ResponseDoc from myDATA
+   */
   async sendErpInvoices(invoices: AadeBookInvoiceType[]): Promise<ResponseDoc> {
     const xml = this._xmlService.buildInvoicesDocXml(invoices);
 
@@ -109,6 +113,11 @@ export class MyDataClient {
     return this.handleResponse<ResponseDoc>(response, 'sendErpInvoices');
   }
 
+  /**
+   * [ERP] Sends one or more income classifications, corresponding to already submitted invoices.
+   * @param classificationsDoc Object containing income classifications
+   * @returns The full ResponseDoc from myDATA
+   */
   async sendErpIncomeClassification(
     classificationsDoc: IncomeClassificationsDoc
   ): Promise<ResponseDoc> {
