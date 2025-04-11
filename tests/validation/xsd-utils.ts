@@ -10,7 +10,7 @@ import fsp from 'node:fs/promises';
 import path from 'path';
 import { validateXML } from 'xmllint-wasm';
 import { AadeBookInvoiceType } from '../../src/models';
-import { XmlHelper } from '../../src/api/xml-helper';
+import { XmlHelper } from '../../src/api/internal/xml-helper';
 
 /**
  * Resolves XSD imports and includes by creating a set of file paths

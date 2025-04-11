@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { formatDatesInObject, XmlHelper } from '../../src/api/xml-helper';
+import { XmlHelper } from '../../src/api/internal/xml-helper';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import {
@@ -9,6 +9,7 @@ import {
   PaymentMethodsDoc,
   AadeBookInvoiceDocType
 } from '../../src/models';
+import { formatDatesInObject } from '../../src/api/internal/utils';
 
 describe('formatDatesInObject', () => {
   it('should format issueDate, dispatchDate, and applicationDate correctly', () => {

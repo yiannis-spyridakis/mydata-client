@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { AadeBookInvoiceDocType } from '../../src/models/invoice.model';
-import { XmlHelper } from '../../src/api/xml-helper';
+import { XmlHelper } from '../../src/api/internal/xml-helper';
 import { validateXmlFile } from '../../tests/validation/xsd-utils';
 
 async function validateAllSamples() {

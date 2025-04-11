@@ -438,7 +438,7 @@ export class MyDataClient {
       this.providerBaseUrl
     }/RequestTransmittedDocs?${params.toString()}`;
     console.log(
-      `[Provider] Requesting Transmitted Docs for VAT ${issuerVat}...`
+      `[Provider] Requesting Transmitted Docs for VAT ${issuerVat}... url=${url}`
     );
 
     const response = await fetch(url, {

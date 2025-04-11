@@ -18,7 +18,7 @@ import { validateInvoice, validateXmlFile } from '../validation/xsd-utils';
 import fs from 'node:fs';
 import path from 'node:path';
 import { AadeBookInvoiceDocType } from '../../src/models/invoice.model';
-import { XmlHelper } from '../../src/api/xml-helper';
+import { XmlHelper } from '../../src/api/internal/xml-helper';
 
 // Mock fetch and XmlHelper
 // Use jest.MockedFunction for better type safety with Jest mocks
@@ -26,7 +26,7 @@ const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;
 global.fetch = mockFetch;
 
 // Mock the entire module
-jest.mock('../../src/api/xml-helper', () => {
+jest.mock('../../src/api/internal/xml-helper', () => {
   // Create a mock constructor that returns a mock instance
   const mockInstance = {
     buildInvoicesDocXml: jest.fn(),
@@ -51,7 +51,8 @@ jest.mock('../validation/xsd-utils', () => ({
 }));
 
 // Get the mocked instance that will be used by MyDataClient
-const mockXmlHelperInstance = require('../../src/api/xml-helper').XmlHelper();
+const mockXmlHelperInstance =
+  require('../../src/api/internal/xml-helper').XmlHelper();
 
 // Get the mocked instance of validateInvoice
 const mockedValidateInvoice = validateInvoice as jest.MockedFunction<
@@ -542,8 +543,8 @@ describe('MyDataClient', () => {
       it('should request docs and return parsed response', async () => {
         const params = {
           mark: 123456,
-          dateFrom: '2023-01-01',
-          dateTo: '2023-12-31'
+          dateFrom: new Date('2023-01-01'),
+          dateTo: new Date('2023-12-31')
         };
         const mockResponseXml =
           '<RequestedDoc><invoicesDoc><invoice></invoice></invoicesDoc></RequestedDoc>';
@@ -560,7 +561,7 @@ describe('MyDataClient', () => {
         const fetchCallArgs = mockFetch.mock.calls[0];
         expect(fetchCallArgs[0]).toEqual(
           expect.stringContaining(
-            '/RequestDocs?mark=123456&dateFrom=2023-01-01&dateTo=2023-12-31'
+            '/RequestDocs?mark=123456&dateFrom=01%2F01%2F2023&dateTo=31%2F12%2F2023'
           )
         );
         const options = fetchCallArgs[1]!;
@@ -579,8 +580,8 @@ describe('MyDataClient', () => {
       it('should handle optional parameters correctly', async () => {
         const params = {
           mark: 123456,
-          dateFrom: '2023-01-01',
-          dateTo: '2023-12-31',
+          dateFrom: new Date('2023-01-01'),
+          dateTo: new Date('2023-12-31'),
           counterVatNumber: '987654321',
           invType: '1.1',
           maxMark: 200000,
@@ -601,8 +602,8 @@ describe('MyDataClient', () => {
 
         const fetchCallArgs = mockFetch.mock.calls[0];
         expect(fetchCallArgs[0]).toContain('mark=123456');
-        expect(fetchCallArgs[0]).toContain('dateFrom=2023-01-01');
-        expect(fetchCallArgs[0]).toContain('dateTo=2023-12-31');
+        expect(fetchCallArgs[0]).toContain('dateFrom=01%2F01%2F2023');
+        expect(fetchCallArgs[0]).toContain('dateTo=31%2F12%2F2023');
         expect(fetchCallArgs[0]).toContain('counterVatNumber=987654321');
         expect(fetchCallArgs[0]).toContain('invType=1.1');
         expect(fetchCallArgs[0]).toContain('maxMark=200000');
@@ -790,7 +791,7 @@ describe('MyDataClient', () => {
         const fetchCallArgs = mockFetch.mock.calls[0];
         expect(fetchCallArgs[0]).toEqual(
           expect.stringContaining(
-            `/RequestTransmittedDocs?issuervat=${issuerVat}&mark=${mark}`
+            `/RequestTransmittedDocs?issuerVat=${issuerVat}&mark=${mark}`
           )
         );
         const options = fetchCallArgs[1]!;
@@ -821,7 +822,7 @@ describe('MyDataClient', () => {
         );
 
         const fetchCallArgs = mockFetch.mock.calls[0];
-        expect(fetchCallArgs[0]).toContain(`issuervat=${issuerVat}`);
+        expect(fetchCallArgs[0]).toContain(`issuerVat=${issuerVat}`);
         expect(fetchCallArgs[0]).toContain(`mark=${mark}`);
         expect(fetchCallArgs[0]).toContain(
           `nextPartitionKey=${nextPartitionKey}`
