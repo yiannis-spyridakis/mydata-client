@@ -56,7 +56,7 @@ export class XmlHelper {
     const rootObject = {
       'icls:IncomeClassificationsDoc': {
         $: {
-          'xmlns:icls': 'https://www.aade.gr/myDATA/incomeClassification/v1.0',
+          'xmlns:icls': 'https://www.aade.gr/myDATA/incomeClassificaton/v1.0',
           'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
         },
         'icls:incomeInvoiceClassification':
