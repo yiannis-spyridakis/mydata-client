@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added individual examples for every public MyDataClient method (eb201e7)
+- Added CHANGELOG.md (1162b00)
 
 ### Fixed
 
