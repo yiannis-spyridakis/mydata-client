@@ -76,8 +76,7 @@ export class XmlHelper {
     const rootObject = {
       'ecls:ExpensesClassificationsDoc': {
         $: {
-          'xmlns:ecls':
-            'https://www.aade.gr/myDATA/expensesClassification/v1.0',
+          'xmlns:ecls': 'https://www.aade.gr/myDATA/expensesClassificaton/v1.0',
           'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
         },
         'ecls:expensesInvoiceClassification':

@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import { MyDataClient } from '../../src';
-import { ExpensesClassificationsDoc } from '../../src/models/expensesClassification.model';
+import {
+  ExpensesClassificationsDoc,
+  InvoiceExpensesClassificationType
+} from '../../src/models/expensesClassification.model';
 import {
   ExpensesClassificationCategoryType,
   ExpensesClassificationValueType
@@ -13,26 +16,79 @@ dotenv.config();
  * Creates sample expenses classification data
  */
 function createSampleExpensesClassifications(): ExpensesClassificationsDoc {
-  return {
-    expensesInvoiceClassification: [
+  // Example 1: Using transactionMode (Reject or Deviation)
+  const classificationWithTransactionMode: InvoiceExpensesClassificationType = {
+    invoiceMark: 123456789, // Example MARK from existing invoice
+    entityVatNumber: process.env.MYDATA_ISSUER_VAT || '', // Get from .env
+    transactionMode: 2 // Example: Deviation
+  };
+
+  // Example 2: Using detailed classifications per line (postPerInvoice = false)
+  const classificationWithDetails: InvoiceExpensesClassificationType = {
+    invoiceMark: 987654321, // Example MARK from another invoice
+    entityVatNumber: process.env.MYDATA_ISSUER_VAT || '', // Get from .env
+    invoicesExpensesClassificationDetails: [
       {
-        invoiceMark: 123456789, // Example MARK from existing invoice
-        entityVatNumber: process.env.MYDATA_ISSUER_VAT || '', // Get from .env
-        invoicesExpensesClassificationDetails: [
+        lineNumber: 1,
+        expensesClassificationDetailData: [
           {
-            lineNumber: 1,
-            expensesClassificationDetailData: [
-              {
-                classificationType:
-                  ExpensesClassificationValueType.OTHER_EXPENSES,
-                classificationCategory:
-                  ExpensesClassificationCategoryType.PURCHASES_OF_GOODS,
-                amount: 500.0 // Amount in EUR
-              }
-            ]
+            classificationType:
+              ExpensesClassificationValueType.PURCHASES_GOODS_WHOLESALE,
+            classificationCategory:
+              ExpensesClassificationCategoryType.PURCHASES_OF_GOODS,
+            amount: 500.0 // Amount in EUR
+          }
+        ]
+      },
+      {
+        lineNumber: 2,
+        expensesClassificationDetailData: [
+          {
+            classificationType: ExpensesClassificationValueType.RENT_EXPENSES,
+            classificationCategory:
+              ExpensesClassificationCategoryType.GENERAL_EXPENSES_NO_VAT_DEDUCTIBLE,
+            amount: 150.0
           }
         ]
       }
+    ]
+    // classificationPostMode: 0 // Optional, defaults to per-line if not provided
+  };
+
+  // Example 3: Using detailed classifications per invoice (postPerInvoice = true)
+  const classificationPostPerInvoice: InvoiceExpensesClassificationType = {
+    invoiceMark: 112233445, // Example MARK from another invoice
+    entityVatNumber: process.env.MYDATA_ISSUER_VAT || '', // Get from .env
+    classificationPostMode: 1, // Indicate classification is per invoice
+    invoicesExpensesClassificationDetails: [
+      // Still need this wrapper, but lineNumber is ignored
+      {
+        lineNumber: 1, // Line number is ignored when classificationPostMode = 1
+        expensesClassificationDetailData: [
+          {
+            classificationType:
+              ExpensesClassificationValueType.PURCHASES_GOODS_WHOLESALE,
+            classificationCategory:
+              ExpensesClassificationCategoryType.PURCHASES_OF_GOODS,
+            amount: 600.0
+          },
+          {
+            classificationType: ExpensesClassificationValueType.OTHER_EXPENSES,
+            classificationCategory:
+              ExpensesClassificationCategoryType.GENERAL_EXPENSES_VAT_DEDUCTIBLE,
+            amount: 50.0
+          }
+        ]
+      }
+    ]
+  };
+
+  return {
+    // Choose which example(s) to send
+    expensesInvoiceClassification: [
+      // classificationWithTransactionMode,
+      classificationWithDetails
+      // classificationPostPerInvoice
     ]
   };
 }
