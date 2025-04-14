@@ -132,7 +132,7 @@ export interface InvoiceRowType {
   /** Line Sequential Number (AA) */
   lineNumber: number; // xs:int, MinInclusive 1
   /** Line Type Code (e.g., Fee, Other Tax) */
-  recType?: 1 | 2 | 3 | 4 | 5 | 6 | 7; // xs:int, Optional (1-7)
+  recType?: RecType; // xs:int, Optional (1-7)
   /** TARIC Code (for delivery notes) */
   TaricNo?: string; // xs:string, Optional, Length 10
   /** Item Code (for delivery notes) */
@@ -356,4 +356,24 @@ export interface PaymentMethods {
 
 export interface TaxesTotals {
   taxes: TaxTotalsType[]; // Array (1..unbounded)
+}
+
+/**
+ * Enum for invoice row types (recType) with their corresponding codes and descriptions
+ */
+export enum RecType {
+  /** Special Line for Withheld Taxes (Inactive - for future use) */
+  SPECIAL_WITHHELD_TAXES = 1,
+  /** Fee Line with VAT */
+  FEE_WITH_VAT = 2,
+  /** Other Taxes Line with VAT */
+  OTHER_TAXES_WITH_VAT = 3,
+  /** Special Line for Stamp Duty (Inactive - for future use) */
+  SPECIAL_STAMP_DUTY = 4,
+  /** Special Line for Deductions (Inactive - for future use) */
+  SPECIAL_DEDUCTIONS = 5,
+  /** Gift Voucher */
+  GIFT_VOUCHER = 6,
+  /** Negative value sign (Valid only for invoices 17.3, 17.4, 17.5, and 17.6) */
+  NEGATIVE_VALUE_SIGN = 7
 }
