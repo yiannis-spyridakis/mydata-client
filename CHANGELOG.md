@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.1...v0.5.2) (2025-04-14)
+
 ### 0.5.1 (2025-04-14)
 
 # Changelog
