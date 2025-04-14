@@ -1,6 +1,6 @@
 {
   "name": "@logismix/mydata-client",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Greek myDATA (AADE) API client library",
   "repository": {
     "type": "git",
@@ -33,7 +33,10 @@
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "test": "jest --config jest.config.cjs",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build && npm test",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major"
   },
   "keywords": [
     "mydata",
@@ -63,6 +66,7 @@
     "jest": "^29.0.0",
     "mkdirp": "^3.0.1",
     "rimraf": "^5.0.0",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.0.0",
     "typescript": "^5.0.0"
   }
