@@ -1,0 +1,3 @@
+# Exclude TypeScript config files from published package
+tsconfig.json
+tsconfig.esm.json
