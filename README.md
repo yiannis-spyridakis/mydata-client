@@ -195,7 +195,31 @@ The `/examples` directory contains complete usage examples for both TypeScript a
 
 ### TypeScript Examples
 
+#### ERP Examples
+
 - `invoice-example.ts` - Sending an invoice
+- `cancel-erp-invoice-example.ts` - Canceling a transmitted invoice
+- `request-erp-docs-example.ts` - Requesting received documents
+- `request-erp-transmitted-docs-example.ts` - Requesting transmitted documents
+- `request-erp-my-expenses-example.ts` - Requesting aggregated expense data
+- `request-erp-my-income-example.ts` - Requesting aggregated income data
+- `request-erp-vat-info-example.ts` - Requesting VAT related data
+- `request-erp-e3-info-example.ts` - Requesting E3 related data
+- `send-erp-expenses-classification-example.ts` - Sending expense classifications
+- `send-erp-income-classification-example.ts` - Sending income classifications
+- `send-erp-invoices-example.ts` - Sending invoices
+- `send-erp-payments-method-example.ts` - Sending payment methods
+
+#### Provider Examples
+
+- `send-provider-invoices-example.ts` - Sending invoices
+- `send-provider-payments-method-example.ts` - Sending payment methods
+- `send-provider-unsigned-invoices-example.ts` - Sending unsigned invoices
+- `request-provider-transmitted-docs-example.ts` - Requesting transmitted documents
+- `request-provider-receiver-info-example.ts` - Requesting receiver information
+
+#### Common Examples
+
 - `retrieve-docs-example.ts` - Retrieving documents
 - `validate-sample-invoices.ts` - XML validation examples
 - `validate-sample-invoice-xmls.ts` - Advanced XML validation
