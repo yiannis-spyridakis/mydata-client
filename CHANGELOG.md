@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.7](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.6...v0.5.7) (2025-04-14)
+
+
+### Bug Fixes
+
+* exclude tsconfig files from published package ([80e29d3](https://github.com/yiannis-spyridakis/mydata-client/commit/80e29d3c8eaa350fadacbd5a311b8c4648ce59a9))
+
 ### [0.5.6](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.5...v0.5.6) (2025-04-14)
 
 ### [0.5.5](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.4...v0.5.5) (2025-04-14)
