@@ -11,9 +11,9 @@ A TypeScript/JavaScript client library for the Greek myDATA (AADE) API, supporti
   - [JavaScript (CommonJS)](#javascript-commonjs)
   - [JavaScript (ESM)](#javascript-esm)
 - [Testing](#testing)
-- [API Documentation](#api-documentation)
-- [Examples](#examples)
+- [Development Workflow](#development-workflow)
 - [Official Documentation](#official-documentation)
+- [Examples](#examples)
 - [License](#license)
 
 ## Installation
@@ -128,6 +128,55 @@ MYDATA_RECEIVER_VAT=customer_vat_number
 ```
 
 3. The test suite validates XML against the official XSD schemas (v1.0.10) located in `/schemas`
+
+## Development Workflow
+
+### Versioning Workflow
+
+1. **Update CHANGELOG.md**:
+
+   - Add new entries under `[Unreleased]` section as changes are made
+   - Group changes by type (Added, Changed, Deprecated, Removed, Fixed, Security)
+   - Include issue/PR references when applicable (e.g., `#123`)
+
+2. **Update package.json version**:
+
+   ```bash
+   npm version patch|minor|major
+   ```
+
+   This will:
+
+   - Update package.json version
+   - Create a git commit with the version bump
+   - Create a git tag with the version
+
+3. **Update CHANGELOG for release**:
+
+   - Rename `[Unreleased]` to new version (e.g., `[1.2.3] - 2025-04-14`)
+   - Add new `[Unreleased]` section at top
+
+4. **Create GitHub Release**:
+
+   ```bash
+   git push origin main --tags
+   ```
+
+   Then create a release on GitHub using the new tag, copying relevant CHANGELOG entries
+
+5. **Automation (optional)**:
+   Consider adding these npm scripts to package.json:
+   ```json
+   "scripts": {
+     "release": "standard-version",
+     "release:minor": "standard-version --release-as minor",
+     "release:major": "standard-version --release-as major"
+   }
+   ```
+   Then install `standard-version`:
+   ```bash
+   npm install --save-dev standard-version
+   ```
 
 ## Official Documentation
 
