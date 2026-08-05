@@ -46,3 +46,9 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Agent assets linked into the private admin hub
+memory-bank
+AGENTS.md
+.github/copilot-instructions.md
+.github/skills/memory-bank
