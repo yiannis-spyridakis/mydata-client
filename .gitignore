@@ -52,3 +52,9 @@ memory-bank
 AGENTS.md
 .github/copilot-instructions.md
 .github/skills/memory-bank
+
+# Spec pipeline intermediates. The upstream PDFs/XSDs and manifest.json ARE
+# tracked (they are the provenance record); these are regenerated from them.
+spec/*/text/
+spec/*/structured/
+spec/*/untranslated.json

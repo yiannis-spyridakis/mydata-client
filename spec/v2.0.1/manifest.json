@@ -1,0 +1,52 @@
+{
+  "version": "2.0.1",
+  "sourcePage": "https://www.aade.gr/mydata/tehnikes-prodiagrafes-ekdoseis-mydata",
+  "fetchedAt": "2026-08-05T22:43:39.557Z",
+  "assets": [
+    {
+      "id": "erp",
+      "kind": "pdf",
+      "audience": "erp",
+      "url": "https://www.aade.gr/sites/default/files/2026-03/myDATA%20API%20Documentation%20v2.0.1_official_erp.pdf",
+      "path": "v2.0.1/erp.pdf",
+      "sha256": "a175ae07f9d705d998301390d2175714582f6416cfc13c44f420dce0c7760a63",
+      "bytes": 4254095
+    },
+    {
+      "id": "providers",
+      "kind": "pdf",
+      "audience": "providers",
+      "url": "https://www.aade.gr/sites/default/files/2026-03/myDATA%20API%20Documentation_Providers_v2%200%201_official.pdf",
+      "path": "v2.0.1/providers.pdf",
+      "sha256": "e08c504c343e4b41f2d26e8ab8e865b6873779f9459c8b8b44797d37d0cc17d8",
+      "bytes": 2176404
+    },
+    {
+      "id": "delivery-note",
+      "kind": "pdf",
+      "audience": "delivery-note",
+      "url": "https://www.aade.gr/sites/default/files/2026-03/myDATA%20API%20Documentation_DeliveryNote_v2.0.1_official.pdf",
+      "path": "v2.0.1/delivery-note.pdf",
+      "sha256": "5a23d154d754b4abd14da6c38bcfd52c865d8e914da2598a50a6e61f35efdc72",
+      "bytes": 2065915
+    },
+    {
+      "id": "xsds",
+      "kind": "xsd-zip",
+      "audience": "common",
+      "url": "https://www.aade.gr/sites/default/files/2026-03/v2.0.1%20XSDs.zip",
+      "path": "v2.0.1/xsds.zip",
+      "sha256": "c349500db41c430e8010980ae0910eae012fe5fb782af27e65dea2ecf466f7e7",
+      "bytes": 27695
+    },
+    {
+      "id": "classification-combinations",
+      "kind": "xlsx",
+      "audience": "common",
+      "url": "https://www.aade.gr/sites/default/files/2026-03/syndiasmoi_xaraktirismwn_v2.0.1.xlsx",
+      "path": "v2.0.1/classification-combinations.xlsx",
+      "sha256": "7c60b97ee6e77cfb4f8b9191706ac8a872708dcc8d4f078465c03e21dbc0a00c",
+      "bytes": 177609
+    }
+  ]
+}

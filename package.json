@@ -32,6 +32,11 @@
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "test": "jest --config jest.config.cjs",
+    "test:spec": "jest --config tools/spec-pipeline/jest.config.cjs",
+    "spec": "ts-node --project tools/spec-pipeline/tsconfig.json tools/spec-pipeline/src/cli.ts",
+    "spec:check": "npm run spec -- check",
+    "spec:fetch": "npm run spec -- fetch",
+    "spec:build": "npm run spec -- all",
     "prepublishOnly": "npm run build && npm test",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
@@ -67,6 +72,7 @@
     "rimraf": "^5.0.0",
     "standard-version": "^9.5.0",
     "ts-jest": "^29.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.0.0"
   }
 }

@@ -1,3 +1,7 @@
 # Exclude TypeScript config files from published package
 tsconfig.json
 tsconfig.esm.json
+
+# Spec pipeline + its inputs are development-only
+tools/
+spec/
