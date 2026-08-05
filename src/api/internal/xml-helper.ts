@@ -35,7 +35,7 @@ export class XmlHelper {
           xmlns: 'http://www.aade.gr/myDATA/invoice/v1.0',
           'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
           'xsi:schemaLocation':
-            'http://www.aade.gr/myDATA/invoice/v1.0/InvoicesDoc-v1.0.10.xsd',
+            'http://www.aade.gr/myDATA/invoice/v1.0/InvoicesDoc-v2.0.1.xsd',
           'xmlns:icls': 'https://www.aade.gr/myDATA/incomeClassificaton/v1.0',
           'xmlns:ecls': 'https://www.aade.gr/myDATA/expensesClassificaton/v1.0'
         },

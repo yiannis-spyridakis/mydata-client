@@ -141,7 +141,7 @@ export async function validateInvoice(
 ): Promise<boolean> {
   try {
     const xmlHelper = new XmlHelper();
-    const xsdPath = 'schemas/InvoicesDoc-v1.0.10.xsd';
+    const xsdPath = 'schemas/InvoicesDoc-v2.0.1.xsd';
 
     // Convert invoice to XML
     const xmlContent = xmlHelper.buildInvoicesDocXml([invoice]);

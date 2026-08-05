@@ -993,7 +993,7 @@ describe('MyDataClient', () => {
 
   describe('XML Validation Tests', () => {
     const samplesDir = path.join(process.cwd(), 'examples/xml');
-    const xsdPath = path.join(process.cwd(), 'schemas/InvoicesDoc-v1.0.10.xsd');
+    const xsdPath = path.join(process.cwd(), 'schemas/InvoicesDoc-v2.0.1.xsd');
 
     it('should validate all sample XML files against schema', async () => {
       const files = fs.readdirSync(samplesDir);

@@ -28,7 +28,7 @@ async function validateInvoiceXml(xmlPath: string) {
     // Determine XSD schema based on XML version
     const xsdPath = path.resolve(
       process.cwd(),
-      'schemas/InvoicesDoc-v1.0.10.xsd'
+      'schemas/InvoicesDoc-v2.0.1.xsd'
     );
 
     const xmlHelper = new XmlHelper();

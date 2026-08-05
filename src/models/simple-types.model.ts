@@ -1,4 +1,4 @@
-// TypeScript model for simple types based on SimpleTypes-v1.0.10.xsd
+// TypeScript model for simple types based on SimpleTypes-v2.0.1.xsd
 
 export type AmountType = number;
 export type ExchangeRateType = number;
@@ -277,7 +277,11 @@ export enum InvoiceType {
   RECEIPT_POS = '8.4',
   REFUND_RECEIPT_POS = '8.5',
   ORDER_SLIP_CATERING = '8.6',
+  DELIVERY_NOTE_CORRELATED = '9.1',
+  DELIVERY_NOTE_AGGREGATE = '9.2',
   DELIVERY_NOTE = '9.3',
+  QUANTITY_RECEIPT_NOTE_CORRELATED = '10.1',
+  QUANTITY_RECEIPT_NOTE_NON_CORRELATED = '10.2',
   RETAIL_RECEIPT = '11.1',
   RETAIL_SERVICE_RECEIPT = '11.2',
   SIMPLIFIED_INVOICE = '11.3',
@@ -669,7 +673,8 @@ export enum SpecialInvoiceCategoryType {
   RETAIL_REVENUE_FHM_AADE_2 = 9,
   RETAIL_REVENUE_FHM_ENTERPRISE_VARIANCE = 10,
   HEATING_ALLOWANCE = 11,
-  CATERING_TRANSACTIONS = 12
+  CATERING_TRANSACTIONS = 12,
+  DIFFICULTY_CORRELATING_F2_E3 = 13
 }
 
 export enum InvoiceVariationType {
@@ -849,6 +854,36 @@ export enum ExpensesClassificationCategoryType {
   OPENING_INVENTORY_PERIOD = 'category2_13',
   CLOSING_INVENTORY_PERIOD = 'category2_14',
   OTHER_INFORMATIONAL_EXPENSE_ELEMENTS = 'category2_95'
+}
+
+/** Outcome reported when confirming a delivery (v2.0.1). */
+export enum DeliveryOutcomeType {
+  FULL = 'FULL',
+  PARTIAL = 'PARTIAL',
+  NONE = 'NONE'
+}
+
+/** Reason a reverse delivery note (9.3) was issued. Appendix 8.21 (v2.0.1). */
+export enum ReverseDeliveryNotePurposeType {
+  NOT_OBLIGED_TO_ISSUE = 1,
+  REFUSAL_OR_INADVERTENT_NON_ISSUANCE = 2,
+  INTRACOMMUNITY_ACQUISITION = 3,
+  THIRD_COUNTRY_ACQUISITION = 4,
+  REVERSE_CHARGE = 5
+}
+
+/**
+ * Lifecycle state of a delivery note. Read-only: set by myDATA, not submitted.
+ * Value 6 is unassigned in v2.0.1.
+ */
+export enum InvoiceDeliveryStatusType {
+  REGISTERED = 1,
+  CANCELLED = 2,
+  IN_TRANSIT = 3,
+  REJECTED = 4,
+  DELIVERED_BY_CARRIER = 5,
+  FAILED_DELIVERY = 7,
+  COMPLETED = 8
 }
 
 /**
