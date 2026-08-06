@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.7...v0.6.0) (2026-08-06)
+
+
+### Features
+
+* support myDATA v2.0.1 ([0e6087e](https://github.com/yiannis-spyridakis/mydata-client/commit/0e6087e23b57de01d8dd08ad993f8e0379dd0aa5))
+* **tools:** add myDATA spec pipeline (PDF -> docs) ([e10772e](https://github.com/yiannis-spyridakis/mydata-client/commit/e10772eb3e7067497d515ea8cd8e9aa7a7f3c8aa))
+
+### Bug Fixes
+
+* omit undefined and null instead of emitting empty XML elements ([7d799e4](https://github.com/yiannis-spyridakis/mydata-client/commit/7d799e4)) — `xml2js` rendered an unset optional as an empty element (e.g. `<selfPricing/>`), which AADE rejects with "The string '' is not a valid Boolean/Decimal/Date value". Any document with unset optional fields failed validation. Verified against the myDATA sandbox.
+
 ### [0.5.7](https://github.com/yiannis-spyridakis/mydata-client/compare/v0.5.6...v0.5.7) (2025-04-14)
 
 
