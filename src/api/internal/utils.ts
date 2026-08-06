@@ -35,6 +35,11 @@ export function formatDatesInObject(obj: any): any {
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key];
+      // xml2js renders undefined/null as an EMPTY element, which AADE rejects
+      // ("The string '' is not a valid ..."). Optional fields must be absent.
+      if (value === undefined || value === null) {
+        continue;
+      }
       if (value instanceof Date) {
         if (
           key === 'issueDate' ||

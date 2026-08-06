@@ -69,6 +69,28 @@ describe('formatDatesInObject', () => {
     expect(formatDatesInObject(input)).toEqual(expected);
   });
 
+  it('should drop undefined and null so xml2js emits no empty elements', () => {
+    const input = {
+      invoiceHeader: {
+        series: 'A',
+        vatPaymentSuspension: undefined,
+        exchangeRate: null,
+        selfPricing: false,
+        movePurpose: 0
+      },
+      counterpart: {
+        vatNumber: '123456789',
+        countryDocumentId: undefined
+      }
+    };
+
+    // false and 0 are meaningful values and must survive the prune.
+    expect(formatDatesInObject(input)).toEqual({
+      invoiceHeader: { series: 'A', selfPricing: false, movePurpose: 0 },
+      counterpart: { vatNumber: '123456789' }
+    });
+  });
+
   it('should format dispatchTime correctly', () => {
     const date = new Date(2024, 5, 15, 14, 45, 30); // June 15, 2024, 14:45:30
     const input = {
@@ -128,7 +150,7 @@ describe('formatDatesInObject', () => {
     expect(formatDatesInObject(input)).toEqual(expected);
   });
 
-  it('should not modify non-date fields', () => {
+  it('should not modify non-date fields, but drops null', () => {
     const input = {
       name: 'Test',
       count: 10,
@@ -138,8 +160,7 @@ describe('formatDatesInObject', () => {
     const expected = {
       name: 'Test',
       count: 10,
-      active: true,
-      details: null
+      active: true
     };
     expect(formatDatesInObject(input)).toEqual(expected);
   });
