@@ -54,14 +54,10 @@
   "author": "Yiannis Spyridakis <ys@logismix.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.8.4",
-    "libxmljs": "^1.0.11",
-    "xml2js": "^0.6.2",
-    "xmllint-wasm": "^4.0.2"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
-    "@types/libxmljs": "^0.18.13",
     "@types/node": "^22.13.16",
     "@types/node-fetch": "^2.6.12",
     "@types/xml2js": "^0.4.14",
@@ -73,6 +69,7 @@
     "standard-version": "^9.5.0",
     "ts-jest": "^29.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "xmllint-wasm": "^4.0.2"
   }
 }
