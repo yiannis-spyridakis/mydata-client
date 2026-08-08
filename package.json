@@ -31,6 +31,7 @@
     "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
+    "prepare": "npm run build",
     "test": "jest --config jest.config.cjs",
     "test:spec": "jest --config tools/spec-pipeline/jest.config.cjs",
     "spec": "ts-node --project tools/spec-pipeline/tsconfig.json tools/spec-pipeline/src/cli.ts",
