@@ -332,13 +332,28 @@ export interface TransportDetailType {
   /** Vehicle Number */
   vehicleNumber: string; // xs:string, MaxLength 50
   /** Means of transport (1-7). Present on lifecycle events only. */
-  transportType?: number; // xs:int, Optional, v2.0.1
+  transportType: number; // xs:int, Required, v2.0.1
   /** When the movement leg was registered */
   timeStamp?: string; // xs:dateTime, Optional, v2.0.1
   /** VAT number of the carrier */
-  carrierVatNumber?: string; // xs:string, Optional, v2.0.1
+  carrierVatNumber: string; // xs:string, Required, v2.0.1
   /** Carrier's P-number */
   pNumber?: string; // xs:string, Optional, v2.0.1
+  /** Transhipment location, when supplied */
+  location?: LocationType; // Optional, v2.0.1
+}
+
+/** Geographic location recorded for a delivery lifecycle event. */
+export interface LocationType {
+  longitude: number; // xs:decimal
+  latitude: number; // xs:decimal
+}
+
+/** Packaging quantity reported with a delivery outcome. */
+export interface PackagingDetailType {
+  packagingType: number; // xs:int (1..6)
+  quantity: number; // xs:int
+  otherPackagingTypeTitle?: string; // xs:string, Optional
 }
 
 /** Outcome of a delivery, reported on a lifecycle event. */
@@ -347,6 +362,8 @@ export interface OutcomeDetailsType {
   outcome: DeliveryOutcomeType;
   /** Goods left without the recipient present */
   deliveredWithoutRecipient?: boolean; // xs:boolean, Optional
+  /** Packaging delivered with the goods */
+  deliveredPackaging?: PackagingDetailType | PackagingDetailType[];
 }
 
 /** Recipient's rejection of a delivery note. */

@@ -20,13 +20,13 @@ import { ReceiverInfoDoc } from '../models/receiverInfoDoc.model';
 import { RequestedBookInfo } from '../models/requestedBookInfo.model';
 import { RequestedVatInfo } from '../models/requestVatInfoResponse.model';
 import { RequestedE3Info } from '../models/requestE3InfoResponse.model';
+import { GetDeliveryNoteStatusResponse } from '../models/delivery-note-status.model';
 import { requestParamsToUrlParams } from './internal/utils';
 import {
   RequestDocParams,
   RequestMyDataParams,
   RequestVatE3Params
 } from '../models/request-params.model';
-import { request } from 'http';
 
 export interface MyDataClientConfig {
   userId: string;
@@ -350,6 +350,31 @@ export class MyDataClient {
 
     // TODO: Ensure XmlService.parseXml handles <RequestedE3Info> root
     return this.handleResponse<RequestedE3Info>(response, 'requestErpE3Info');
+  }
+
+  /**
+   * [ERP] Retrieves the current status and complete lifecycle history of a
+   * digital delivery note.
+   * @param mark The delivery note's invoice MARK
+   * @param issuerVatNumber Required when the caller is not the issuer
+   */
+  async getDeliveryNoteStatus(
+    mark: number,
+    issuerVatNumber?: string
+  ): Promise<GetDeliveryNoteStatusResponse> {
+    const params = requestParamsToUrlParams({ mark, issuerVatNumber });
+    const url = `${this.erpBaseUrl}/GetDeliveryNoteStatus?${params.toString()}`;
+    console.log(`[ERP] Requesting Delivery Note Status for MARK ${mark}...`);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: this.getHeaders(false)
+    });
+
+    return this.handleResponse<GetDeliveryNoteStatusResponse>(
+      response,
+      'getDeliveryNoteStatus'
+    );
   }
 
   // --- Provider User Methods ---

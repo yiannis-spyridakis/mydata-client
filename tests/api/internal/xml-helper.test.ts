@@ -29,6 +29,31 @@ describe('XmlHelper', () => {
     it('should throw error for invalid XML', async () => {
       await expect(helper.parseXml('<invalid>xml')).rejects.toThrow();
     });
+
+    it('preserves delivery status root and repeated lifecycle events', async () => {
+      const result = await helper.parseXml<{
+        GetDeliveryNoteStatusResponse: {
+          invoiceMark: string;
+          lifecycleHistory: Array<{ eventType: string }>;
+        };
+      }>(`
+        <GetDeliveryNoteStatusResponse>
+          <invoiceMark>400000000000001</invoiceMark>
+          <status>3</status>
+          <dispatchTimestamp>2026-03-20T10:15:00Z</dispatchTimestamp>
+          <lifecycleHistory><eventType>RegisterTransfer</eventType></lifecycleHistory>
+          <lifecycleHistory><eventType>ConfirmOutcome</eventType></lifecycleHistory>
+        </GetDeliveryNoteStatusResponse>
+      `);
+
+      expect(result.GetDeliveryNoteStatusResponse.invoiceMark).toBe(
+        '400000000000001'
+      );
+      expect(result.GetDeliveryNoteStatusResponse.lifecycleHistory).toEqual([
+        { eventType: 'RegisterTransfer' },
+        { eventType: 'ConfirmOutcome' }
+      ]);
+    });
   });
 
   describe('buildInvoicesDocXml', () => {

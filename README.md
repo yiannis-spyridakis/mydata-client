@@ -229,6 +229,7 @@ new MyDataClient(config: {
 - `requestErpMyExpenses(params: RequestMyDataParams): Promise<RequestedBookInfo>` - Requests aggregated expense data for a period.
 - `requestErpVatInfo(params: RequestVatE3Params): Promise<RequestedVatInfo>` - Requests VAT related data for a period.
 - `requestErpE3Info(params: RequestVatE3Params): Promise<RequestedE3Info>` - Requests E3 related data for a period.
+- `getDeliveryNoteStatus(mark: number, issuerVatNumber?: string): Promise<GetDeliveryNoteStatusResponse>` - Retrieves a digital delivery note's current status and lifecycle history.
 
 #### Provider User Methods
 

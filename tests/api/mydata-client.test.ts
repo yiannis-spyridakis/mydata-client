@@ -611,6 +611,89 @@ describe('MyDataClient', () => {
         expect(fetchCallArgs[0]).toContain('nextRowKey=row1');
       });
     });
+
+    describe('getDeliveryNoteStatus', () => {
+      const mark = 400000000000001;
+      const mockResponseXml = `
+        <GetDeliveryNoteStatusResponse>
+          <invoiceMark>${mark}</invoiceMark>
+          <status>3</status>
+          <dispatchTimestamp>2026-03-20T10:15:00Z</dispatchTimestamp>
+          <lifecycleHistory>
+            <eventType>RegisterTransfer</eventType>
+            <eventTimestamp>2026-03-20T10:15:00Z</eventTimestamp>
+            <actorVat>123456789</actorVat>
+          </lifecycleHistory>
+        </GetDeliveryNoteStatusResponse>`;
+      const expectedParsedResponse = {
+        GetDeliveryNoteStatusResponse: {
+          invoiceMark: String(mark),
+          status: '3',
+          dispatchTimestamp: '2026-03-20T10:15:00Z',
+          lifecycleHistory: {
+            eventType: 'RegisterTransfer',
+            eventTimestamp: '2026-03-20T10:15:00Z',
+            actorVat: '123456789'
+          }
+        }
+      };
+
+      it('requests status with non-content headers and parses the response', async () => {
+        mockFetch.mockResolvedValueOnce(mockSuccessResponse(mockResponseXml));
+        const internalXmlService = (client as any)._xmlService;
+        internalXmlService.parseXml.mockResolvedValue(expectedParsedResponse);
+
+        const result = await client.getDeliveryNoteStatus(mark);
+
+        const [url, options] = mockFetch.mock.calls[0];
+        expect(url).toContain(`/GetDeliveryNoteStatus?mark=${mark}`);
+        expect(options?.method).toBe('GET');
+        const headers =
+          options?.headers instanceof Headers
+            ? options.headers
+            : new Headers(options?.headers ?? {});
+        expect(headers.get('Content-Type')).toBeNull();
+        expect(headers.get('aade-user-id')).toBe(TEST_CONFIG.userId);
+        expect(headers.get('ocp-apim-subscription-key')).toBe(
+          TEST_CONFIG.subscriptionKey
+        );
+        expect(internalXmlService.parseXml).toHaveBeenCalledWith(
+          mockResponseXml
+        );
+        expect(result).toEqual(expectedParsedResponse);
+      });
+
+      it('includes issuerVatNumber when supplied', async () => {
+        mockFetch.mockResolvedValueOnce(mockSuccessResponse(mockResponseXml));
+        const internalXmlService = (client as any)._xmlService;
+        internalXmlService.parseXml.mockResolvedValue(expectedParsedResponse);
+
+        await client.getDeliveryNoteStatus(mark, '123456789');
+
+        expect(mockFetch.mock.calls[0][0]).toContain(
+          `mark=${mark}&issuerVatNumber=123456789`
+        );
+      });
+
+      it('throws the shared API error on HTTP failure', async () => {
+        mockFetch.mockResolvedValueOnce(mockErrorResponse(404, 'Not found'));
+
+        await expect(client.getDeliveryNoteStatus(mark)).rejects.toThrow(
+          new Error('Failed during getDeliveryNoteStatus: 404 Error')
+        );
+        expect((client as any)._xmlService.parseXml).not.toHaveBeenCalled();
+      });
+
+      it('propagates XML parsing failures', async () => {
+        const parseError = new Error('XML Parse Error');
+        mockFetch.mockResolvedValueOnce(mockSuccessResponse('<invalid-xml>'));
+        (client as any)._xmlService.parseXml.mockRejectedValue(parseError);
+
+        await expect(client.getDeliveryNoteStatus(mark)).rejects.toThrow(
+          parseError
+        );
+      });
+    });
   });
 
   describe('Provider Methods', () => {
