@@ -114,8 +114,8 @@ export class XmlHelper {
 
   buildRegisterTransferXml(request: RegisterTransferRequest): string {
     return this.buildDeliveryNoteWriteXml(
-      'RegisterTransfer',
-      'https://www.aade.gr/myDATA/DeliveryNote/v1.0',
+      'Transport',
+      undefined,
       request
     );
   }
@@ -124,8 +124,8 @@ export class XmlHelper {
     request: ConfirmDeliveryOutcomeRequest
   ): string {
     return this.buildDeliveryNoteWriteXml(
-      'ConfirmDeliveryOutcome',
-      'https://www.aade.gr/myDATA/DeliveryNote/v1.0',
+      'ConfirmDeliveryOutcomeRequest',
+      undefined,
       request
     );
   }
@@ -137,22 +137,22 @@ export class XmlHelper {
       );
     }
     return this.buildDeliveryNoteWriteXml(
-      'RejectDeliveryNote',
-      'https://www.aade.gr/myDATA/DeliveryNote/v1.0',
+      'RejectDeliveryNoteRequest',
+      undefined,
       request
     );
   }
 
   private buildDeliveryNoteWriteXml(
     rootName: string,
-    namespace: string,
+    namespace: string | undefined,
     request: object
   ): string {
     const builder = new Builder(this.builderOptions);
     return builder.buildObject({
       [rootName]: {
         $: {
-          xmlns: namespace,
+          ...(namespace ? { xmlns: namespace } : {}),
           'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
         },
         ...formatDatesInObject(request)

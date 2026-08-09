@@ -1,8 +1,13 @@
 import { ResponseDoc } from './response.model';
 
 export interface RegisterTransferRequest {
-  invoiceMark: number;
-  entityVatNumber: string;
+  /** Filled by AADE in successful responses; omit from new requests. */
+  transferMark?: number;
+  qrUrl: string;
+  transportDetail: TransportDetail;
+}
+
+export interface TransportDetail {
   vehicleNumber: string;
   transportType: number;
   timeStamp?: Date | string;
@@ -41,4 +46,4 @@ export interface RejectDeliveryNoteRequest {
   rejectionReason?: string;
 }
 
-export type DeliveryNoteWriteResponse = ResponseDoc;
+export type DeliveryNoteWriteResponse = ResponseDoc | Record<string, unknown>;

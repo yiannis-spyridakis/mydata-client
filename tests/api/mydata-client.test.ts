@@ -711,11 +711,12 @@ describe('MyDataClient', () => {
 
       it('registers a transfer with XML content headers', async () => {
         const request = {
-          invoiceMark: 400000000000001,
-          entityVatNumber: '123456789',
-          vehicleNumber: 'ABC-1234',
-          transportType: 2,
-          carrierVatNumber: '123456789'
+          qrUrl: 'https://mydata.aade.gr/qr/example',
+          transportDetail: {
+            vehicleNumber: 'ABC-1234',
+            transportType: 1,
+            carrierVatNumber: '123456789'
+          }
         };
         mockXmlHelperInstance.buildRegisterTransferXml.mockReturnValue(
           '<RegisterTransfer/>'
@@ -776,11 +777,12 @@ describe('MyDataClient', () => {
 
         await expect(
           client.registerTransfer({
-            invoiceMark: 400000000000001,
-            entityVatNumber: '123456789',
-            vehicleNumber: 'ABC-1234',
-            transportType: 2,
-            carrierVatNumber: '123456789'
+            qrUrl: 'https://mydata.aade.gr/qr/example',
+            transportDetail: {
+              vehicleNumber: 'ABC-1234',
+              transportType: 2,
+              carrierVatNumber: '123456789'
+            }
           })
         ).rejects.toThrow('Failed during registerTransfer: 409 Error');
       });
