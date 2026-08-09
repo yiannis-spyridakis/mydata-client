@@ -777,16 +777,22 @@ describe('MyDataClient', () => {
         );
         mockFetch.mockResolvedValueOnce(mockErrorResponse(409, 'Conflict'));
 
-        await expect(
-          client.registerTransfer({
+        const request = client.registerTransfer({
             qrUrl: 'https://mydata.aade.gr/qr/example',
             transportDetail: {
               vehicleNumber: 'ABC-1234',
               transportType: 2,
               carrierVatNumber: '123456789'
             }
-          })
-        ).rejects.toThrow('Failed during registerTransfer: 409 Error');
+          });
+
+        await expect(request).rejects.toMatchObject({
+          name: 'MyDataHttpError',
+          context: 'registerTransfer',
+          status: 409,
+          statusText: 'Error',
+          responseBody: 'Conflict'
+        });
       });
     });
   });

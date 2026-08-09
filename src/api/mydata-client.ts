@@ -40,6 +40,20 @@ export interface MyDataClientConfig {
   production: boolean;
 }
 
+/** HTTP-level myDATA failure. `status` allows callers to distinguish a
+ * deterministic 4xx rejection from an ambiguous transport/server failure. */
+export class MyDataHttpError extends Error {
+  constructor(
+    readonly context: string,
+    readonly status: number,
+    readonly statusText: string,
+    readonly responseBody: string
+  ) {
+    super(`Failed during ${context}: ${status} ${statusText}`);
+    this.name = 'MyDataHttpError';
+  }
+}
+
 /**
  * MyDATA API Service (Browser & Node.js compatible)
  *
@@ -92,8 +106,11 @@ export class MyDataClient {
       console.error(
         `myDATA API Error (${context}): ${response.status} ${response.statusText}\n${errorText}`
       );
-      throw new Error(
-        `Failed during ${context}: ${response.status} ${response.statusText}`
+      throw new MyDataHttpError(
+        context,
+        response.status,
+        response.statusText,
+        errorText
       );
     }
     const xmlResponse = await response.text();
