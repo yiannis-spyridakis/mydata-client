@@ -11,3 +11,4 @@ export * from './requestedProviderDoc.model';
 export * from './requestVatInfoResponse.model';
 export * from './response.model';
 export * from './delivery-note-status.model';
+export * from './delivery-note-write.model';

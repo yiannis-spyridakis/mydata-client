@@ -26,6 +26,10 @@ export function formatTime(date: Date): string {
   return `${hours}:${minutes}:${seconds}`;
 }
 
+export function formatDateTime(date: Date): string {
+  return date.toISOString();
+}
+
 export function formatDatesInObject(obj: any): any {
   if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return obj;
@@ -51,6 +55,8 @@ export function formatDatesInObject(obj: any): any {
           newObj[key] = formatDate(value);
         } else if (key === 'dispatchTime') {
           newObj[key] = formatTime(value);
+        } else if (key === 'timeStamp') {
+          newObj[key] = formatDateTime(value);
         } else {
           newObj[key] = formatDate(value);
           console.warn(

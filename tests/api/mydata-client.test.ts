@@ -12,7 +12,8 @@ import {
   IncomeClassificationValueType,
   IncomeClassificationCategoryType,
   ExpensesClassificationValueType,
-  ExpensesClassificationCategoryType
+  ExpensesClassificationCategoryType,
+  DeliveryOutcome
 } from '../../src/models';
 import { validateInvoice, validateXmlFile } from '../validation/xsd-utils';
 import fs from 'node:fs';
@@ -33,6 +34,9 @@ jest.mock('../../src/api/internal/xml-helper', () => {
     buildIncomeClassificationXml: jest.fn(),
     buildExpensesClassificationXml: jest.fn(),
     buildPaymentMethodsXml: jest.fn(),
+    buildRegisterTransferXml: jest.fn(),
+    buildConfirmDeliveryOutcomeXml: jest.fn(),
+    buildRejectDeliveryNoteXml: jest.fn(),
     parseXml: jest.fn()
   };
 
@@ -692,6 +696,93 @@ describe('MyDataClient', () => {
         await expect(client.getDeliveryNoteStatus(mark)).rejects.toThrow(
           parseError
         );
+      });
+    });
+
+    describe('delivery-note writes', () => {
+      const expectedParsedResponse = {
+        ResponseDoc: { response: { statusCode: 'Success' } }
+      };
+
+      beforeEach(() => {
+        mockFetch.mockResolvedValue(mockSuccessResponse('<ResponseDoc/>'));
+        mockXmlHelperInstance.parseXml.mockResolvedValue(expectedParsedResponse);
+      });
+
+      it('registers a transfer with XML content headers', async () => {
+        const request = {
+          invoiceMark: 400000000000001,
+          entityVatNumber: '123456789',
+          vehicleNumber: 'ABC-1234',
+          transportType: 2,
+          carrierVatNumber: '123456789'
+        };
+        mockXmlHelperInstance.buildRegisterTransferXml.mockReturnValue(
+          '<RegisterTransfer/>'
+        );
+
+        await expect(client.registerTransfer(request)).resolves.toEqual(
+          expectedParsedResponse
+        );
+
+        expect(mockXmlHelperInstance.buildRegisterTransferXml).toHaveBeenCalledWith(
+          request
+        );
+        const [url, options] = mockFetch.mock.calls[0];
+        expect(url).toContain('/RegisterTransfer');
+        expect(options?.method).toBe('POST');
+        expect(options?.body).toBe('<RegisterTransfer/>');
+      });
+
+      it('confirms a delivery outcome', async () => {
+        const request = {
+          qrUrl: 'https://mydata.aade.gr/qr/example',
+          outcome: DeliveryOutcome.FULL
+        };
+        mockXmlHelperInstance.buildConfirmDeliveryOutcomeXml.mockReturnValue(
+          '<ConfirmDeliveryOutcome/>'
+        );
+
+        await client.confirmDeliveryOutcome(request);
+
+        expect(
+          mockXmlHelperInstance.buildConfirmDeliveryOutcomeXml
+        ).toHaveBeenCalledWith(request);
+        expect(mockFetch.mock.calls[0][0]).toContain('/ConfirmDeliveryOutcome');
+      });
+
+      it('rejects a delivery note', async () => {
+        const request = {
+          invoiceMark: 400000000000001,
+          rejectionReason: 'Damaged goods'
+        };
+        mockXmlHelperInstance.buildRejectDeliveryNoteXml.mockReturnValue(
+          '<RejectDeliveryNote/>'
+        );
+
+        await client.rejectDeliveryNote(request);
+
+        expect(mockXmlHelperInstance.buildRejectDeliveryNoteXml).toHaveBeenCalledWith(
+          request
+        );
+        expect(mockFetch.mock.calls[0][0]).toContain('/RejectDeliveryNote');
+      });
+
+      it('uses the shared HTTP error behavior for delivery writes', async () => {
+        mockXmlHelperInstance.buildRegisterTransferXml.mockReturnValue(
+          '<RegisterTransfer/>'
+        );
+        mockFetch.mockResolvedValueOnce(mockErrorResponse(409, 'Conflict'));
+
+        await expect(
+          client.registerTransfer({
+            invoiceMark: 400000000000001,
+            entityVatNumber: '123456789',
+            vehicleNumber: 'ABC-1234',
+            transportType: 2,
+            carrierVatNumber: '123456789'
+          })
+        ).rejects.toThrow('Failed during registerTransfer: 409 Error');
       });
     });
   });

@@ -21,6 +21,12 @@ import { RequestedBookInfo } from '../models/requestedBookInfo.model';
 import { RequestedVatInfo } from '../models/requestVatInfoResponse.model';
 import { RequestedE3Info } from '../models/requestE3InfoResponse.model';
 import { GetDeliveryNoteStatusResponse } from '../models/delivery-note-status.model';
+import {
+  ConfirmDeliveryOutcomeRequest,
+  DeliveryNoteWriteResponse,
+  RegisterTransferRequest,
+  RejectDeliveryNoteRequest
+} from '../models/delivery-note-write.model';
 import { requestParamsToUrlParams } from './internal/utils';
 import {
   RequestDocParams,
@@ -374,6 +380,54 @@ export class MyDataClient {
     return this.handleResponse<GetDeliveryNoteStatusResponse>(
       response,
       'getDeliveryNoteStatus'
+    );
+  }
+
+  /** [ERP] Registers the start or transfer of a delivery note movement. */
+  async registerTransfer(
+    request: RegisterTransferRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildRegisterTransferXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/RegisterTransfer`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'registerTransfer'
+    );
+  }
+
+  /** [ERP] Confirms the delivery outcome represented by an AADE QR URL. */
+  async confirmDeliveryOutcome(
+    request: ConfirmDeliveryOutcomeRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildConfirmDeliveryOutcomeXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/ConfirmDeliveryOutcome`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'confirmDeliveryOutcome'
+    );
+  }
+
+  /** [ERP] Rejects a delivery note identified by QR URL or invoice MARK. */
+  async rejectDeliveryNote(
+    request: RejectDeliveryNoteRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildRejectDeliveryNoteXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/RejectDeliveryNote`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'rejectDeliveryNote'
     );
   }
 
