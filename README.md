@@ -230,6 +230,15 @@ new MyDataClient(config: {
 - `requestErpVatInfo(params: RequestVatE3Params): Promise<RequestedVatInfo>` - Requests VAT related data for a period.
 - `requestErpE3Info(params: RequestVatE3Params): Promise<RequestedE3Info>` - Requests E3 related data for a period.
 - `getDeliveryNoteStatus(mark: number, issuerVatNumber?: string): Promise<GetDeliveryNoteStatusResponse>` - Retrieves a digital delivery note's current status and lifecycle history.
+- `registerTransfer(request: RegisterTransferRequest): Promise<DeliveryNoteWriteResponse>` - Registers the start or transfer of a delivery-note movement.
+- `confirmDeliveryOutcome(request: ConfirmDeliveryOutcomeRequest): Promise<DeliveryNoteWriteResponse>` - Confirms full, partial, or failed delivery using the AADE QR URL.
+- `rejectDeliveryNote(request: RejectDeliveryNoteRequest): Promise<DeliveryNoteWriteResponse>` - Rejects a delivery note identified by exactly one QR URL or invoice MARK.
+
+Delivery-note write models are exported from the package root. Optional fields
+are omitted from XML rather than serialized as empty elements, and request
+property order follows the AADE v2.0.1 XSD sequences. Delivery-write XML uses
+unqualified elements because the supplied XSDs intentionally declare no target
+namespace.
 
 #### Provider User Methods
 

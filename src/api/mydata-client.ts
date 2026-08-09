@@ -21,6 +21,12 @@ import { RequestedBookInfo } from '../models/requestedBookInfo.model';
 import { RequestedVatInfo } from '../models/requestVatInfoResponse.model';
 import { RequestedE3Info } from '../models/requestE3InfoResponse.model';
 import { GetDeliveryNoteStatusResponse } from '../models/delivery-note-status.model';
+import {
+  ConfirmDeliveryOutcomeRequest,
+  DeliveryNoteWriteResponse,
+  RegisterTransferRequest,
+  RejectDeliveryNoteRequest
+} from '../models/delivery-note-write.model';
 import { requestParamsToUrlParams } from './internal/utils';
 import {
   RequestDocParams,
@@ -32,6 +38,20 @@ export interface MyDataClientConfig {
   userId: string;
   subscriptionKey: string;
   production: boolean;
+}
+
+/** HTTP-level myDATA failure. `status` allows callers to distinguish a
+ * deterministic 4xx rejection from an ambiguous transport/server failure. */
+export class MyDataHttpError extends Error {
+  constructor(
+    readonly context: string,
+    readonly status: number,
+    readonly statusText: string,
+    readonly responseBody: string
+  ) {
+    super(`Failed during ${context}: ${status} ${statusText}`);
+    this.name = 'MyDataHttpError';
+  }
 }
 
 /**
@@ -86,8 +106,11 @@ export class MyDataClient {
       console.error(
         `myDATA API Error (${context}): ${response.status} ${response.statusText}\n${errorText}`
       );
-      throw new Error(
-        `Failed during ${context}: ${response.status} ${response.statusText}`
+      throw new MyDataHttpError(
+        context,
+        response.status,
+        response.statusText,
+        errorText
       );
     }
     const xmlResponse = await response.text();
@@ -374,6 +397,54 @@ export class MyDataClient {
     return this.handleResponse<GetDeliveryNoteStatusResponse>(
       response,
       'getDeliveryNoteStatus'
+    );
+  }
+
+  /** [ERP] Registers the start or transfer of a delivery note movement. */
+  async registerTransfer(
+    request: RegisterTransferRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildRegisterTransferXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/RegisterTransfer`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'registerTransfer'
+    );
+  }
+
+  /** [ERP] Confirms the delivery outcome represented by an AADE QR URL. */
+  async confirmDeliveryOutcome(
+    request: ConfirmDeliveryOutcomeRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildConfirmDeliveryOutcomeXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/ConfirmDeliveryOutcome`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'confirmDeliveryOutcome'
+    );
+  }
+
+  /** [ERP] Rejects a delivery note identified by QR URL or invoice MARK. */
+  async rejectDeliveryNote(
+    request: RejectDeliveryNoteRequest
+  ): Promise<DeliveryNoteWriteResponse> {
+    const xml = this._xmlService.buildRejectDeliveryNoteXml(request);
+    const response = await fetch(`${this.erpBaseUrl}/RejectDeliveryNote`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: xml
+    });
+    return this.handleResponse<DeliveryNoteWriteResponse>(
+      response,
+      'rejectDeliveryNote'
     );
   }
 

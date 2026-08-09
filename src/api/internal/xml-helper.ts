@@ -4,6 +4,11 @@ import { IncomeClassificationsDoc } from '../../models/incomeClassification.mode
 import { ExpensesClassificationsDoc } from '../../models/expensesClassification.model';
 import { PaymentMethodsDoc } from '../../models/paymentMethods.model';
 import { formatDatesInObject } from './utils';
+import {
+  ConfirmDeliveryOutcomeRequest,
+  RegisterTransferRequest,
+  RejectDeliveryNoteRequest
+} from '../../models/delivery-note-write.model';
 
 export class XmlHelper {
   private builderOptions = {
@@ -105,6 +110,54 @@ export class XmlHelper {
     let xml = builder.buildObject(rootObject);
     xml = this.applyPaymentMethodPrefixes(xml);
     return xml;
+  }
+
+  buildRegisterTransferXml(request: RegisterTransferRequest): string {
+    return this.buildDeliveryNoteWriteXml(
+      'Transport',
+      undefined,
+      request
+    );
+  }
+
+  buildConfirmDeliveryOutcomeXml(
+    request: ConfirmDeliveryOutcomeRequest
+  ): string {
+    return this.buildDeliveryNoteWriteXml(
+      'ConfirmDeliveryOutcomeRequest',
+      undefined,
+      request
+    );
+  }
+
+  buildRejectDeliveryNoteXml(request: RejectDeliveryNoteRequest): string {
+    if ((request.qrUrl ? 1 : 0) + (request.invoiceMark ? 1 : 0) !== 1) {
+      throw new Error(
+        'RejectDeliveryNote requires exactly one of qrUrl or invoiceMark'
+      );
+    }
+    return this.buildDeliveryNoteWriteXml(
+      'RejectDeliveryNoteRequest',
+      undefined,
+      request
+    );
+  }
+
+  private buildDeliveryNoteWriteXml(
+    rootName: string,
+    namespace: string | undefined,
+    request: object
+  ): string {
+    const builder = new Builder(this.builderOptions);
+    return builder.buildObject({
+      [rootName]: {
+        $: {
+          ...(namespace ? { xmlns: namespace } : {}),
+          'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
+        },
+        ...formatDatesInObject(request)
+      }
+    });
   }
 
   private applyInvoiceNamespacePrefixes(xml: string): string {
