@@ -46,4 +46,4 @@ export interface RejectDeliveryNoteRequest {
   rejectionReason?: string;
 }
 
-export type DeliveryNoteWriteResponse = ResponseDoc | Record<string, unknown>;
+export type DeliveryNoteWriteResponse = ResponseDoc;

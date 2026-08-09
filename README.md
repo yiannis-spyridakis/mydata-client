@@ -236,7 +236,9 @@ new MyDataClient(config: {
 
 Delivery-note write models are exported from the package root. Optional fields
 are omitted from XML rather than serialized as empty elements, and request
-property order follows the AADE v2.0.1 XSD sequences.
+property order follows the AADE v2.0.1 XSD sequences. Delivery-write XML uses
+unqualified elements because the supplied XSDs intentionally declare no target
+namespace.
 
 #### Provider User Methods
 

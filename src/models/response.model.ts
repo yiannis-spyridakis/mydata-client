@@ -21,6 +21,12 @@ export interface ResponseType {
   invoiceMark?: number;
   /** QR Code URL */
   qrUrl?: string;
+  /** Unique movement start/transfer registration number */
+  transferMark?: number;
+  /** Unique delivery-note rejection registration number */
+  rejectMark?: number;
+  /** Unique delivery-outcome registration number */
+  deliveryOutcomeMark?: number;
   /** Unique Classification Registration Number */
   classificationMark?: number;
   /** Unique Cancellation Number */

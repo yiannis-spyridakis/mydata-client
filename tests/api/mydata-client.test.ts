@@ -701,7 +701,9 @@ describe('MyDataClient', () => {
 
     describe('delivery-note writes', () => {
       const expectedParsedResponse = {
-        ResponseDoc: { response: { statusCode: 'Success' } }
+        ResponseDoc: {
+          response: { statusCode: 'Success', transferMark: 700000000000001 }
+        }
       };
 
       beforeEach(() => {
